@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persistanceDb } from "../middleware/persistanceDb";
 import { persistanceMiddleware } from "../middleware/persistanceMiddleware";
 import { usersSlice } from "./users/slice";
 
@@ -7,7 +8,7 @@ export const store = configureStore({
 		users: usersSlice.reducer,
 	},
 	middleware: () => {
-		return [persistanceMiddleware];
+		return [persistanceMiddleware, persistanceDb];
 	},
 });
 

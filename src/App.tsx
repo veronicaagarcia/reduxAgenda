@@ -6,7 +6,7 @@ import { ListOfUsers } from "./components/ListOfUsers";
 function App() {
 	return (
 		<>
-			<h1 style={{ marginBottom: "16px", color: "tomato", fontWeight: "bold" }}>Redux Proyect</h1>
+			<h1 style={{ marginBottom: "16px", color: "tomato", fontWeight: "bold" }}>Agenda</h1>
 			<ListOfUsers />
 			<CreateUser />
 			<Toaster richColors />

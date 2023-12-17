@@ -1,32 +1,10 @@
 import { Badge, Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Title } from "@tremor/react";
-
-const users: {
-	id: string;
-	name: string;
-	email: string;
-	github: string;
-}[] = [
-	{
-		id: "1",
-		name: "Peter Doe",
-		email: "peter@gmail.com",
-		github: "peter",
-	},
-	{
-		id: "2",
-		name: "veronica",
-		email: "veroagarcia90@gmail.com",
-		github: "veronicaagarcia",
-	},
-	{
-		id: "3",
-		name: "Lilith Dev",
-		email: "lilithd@gmail.com",
-		github: "lilith",
-	},
-];
+import { useAppSelector } from "../hooks/store";
+import { useUserActions } from "../hooks/useUserActions";
 
 export function ListOfUsers() {
+	const users = useAppSelector((state) => state.users);
+	const { deleteUser } = useUserActions();
 	return (
 		<Card>
 			<Title>
@@ -36,24 +14,25 @@ export function ListOfUsers() {
 			<Table>
 				<TableHead>
 					<TableRow>
-						<TableHeaderCell>Id</TableHeaderCell>
+						<TableHeaderCell>Avatar</TableHeaderCell>
 						<TableHeaderCell>Name</TableHeaderCell>
+						<TableHeaderCell>LastName</TableHeaderCell>
 						<TableHeaderCell>Email</TableHeaderCell>
-						<TableHeaderCell>Action</TableHeaderCell>
+						<TableHeaderCell>Actions</TableHeaderCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{users.map((item) => (
-						<TableRow key={item.name}>
-							<TableCell>{item.id}</TableCell>
-							<TableCell style={{ display: "flex", justifyContent: "space-arround", alignItems: "center" }}>
+						<TableRow key={item.id}>
+							<TableCell>
 								<img
 									style={{ width: "36px", height: "36px", borderRadius: "20px", marginRight: "8px" }}
 									src={`https://unavatar.io/github/${item.github}`}
 									alt={item.name}
 								/>
-								{item.name}
 							</TableCell>
+							<TableCell>{item.name}</TableCell>
+							<TableCell>{item.lastName}</TableCell>
 							<TableCell>{item.email}</TableCell>
 							<TableCell>
 								<button type="button" style={{ marginRight: "8px" }}>
@@ -65,6 +44,7 @@ export function ListOfUsers() {
 										stroke="currentColor"
 										className="w-6 h-6"
 									>
+										<title>Edit </title>
 										<path
 											strokeLinecap="round"
 											strokeLinejoin="round"
@@ -72,7 +52,7 @@ export function ListOfUsers() {
 										/>
 									</svg>
 								</button>
-								<button type="button">
+								<button onClick={() => deleteUser(item.id)} type="button">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
@@ -81,6 +61,7 @@ export function ListOfUsers() {
 										stroke="currentColor"
 										className="w-6 h-6"
 									>
+										<title>Delete</title>
 										<path
 											strokeLinecap="round"
 											strokeLinejoin="round"

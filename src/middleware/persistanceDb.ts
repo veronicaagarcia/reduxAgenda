@@ -2,7 +2,7 @@ import { type Middleware } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 
 export const persistanceDb: Middleware = (store) => (next) => (action) => {
-	const { type, payload } = action;
+	const { type, payload } = action ;
 	next(action);
 
 	if (type === "users/deleteUserById") {
@@ -17,6 +17,20 @@ export const persistanceDb: Middleware = (store) => (next) => (action) => {
 			.catch(() => {
 				console.log("error");
 			});
+	}
+
+	if (type === "users/handleEdit"){
+		fetch(`https://jsonplaceholder.typicode.com/users/${payload}`, {
+			method: "PUT",
+		})
+		.then((res) => {
+			if (res.ok) {
+				toast.success(`user id: '${payload}' edited correctly`);
+			}
+		})
+		.catch(() => {
+			console.log("error");
+		});
 	}
 
 	if (type === "users/createUser") {

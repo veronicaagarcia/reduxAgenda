@@ -15,28 +15,28 @@ export interface UserId extends User {
 
 const defaultState = [
 	{
-		id: "0",
-		name: "Juampi",
+		id: "1",
+		name: "Juan Pablo",
 		lastName: "Riglos",
 		email: "JuanPabloRiglos@gmail.com",
 		github: "JuanPabloRiglos",
 	},
 	{
-		id: "1",
+		id: "2",
 		name: "Peter",
 		lastName: "Do",
 		email: "peter@gmail.com",
 		github: "peter",
 	},
 	{
-		id: "2",
-		name: "veronica",
+		id: "3",
+		name: "Veronica",
 		lastName: "Garcia",
 		email: "veroagarcia90@gmail.com",
 		github: "veronicaagarcia",
 	},
 	{
-		id: "3",
+		id: "4",
 		name: "Lilith",
 		lastName: "Dev",
 		email: "lilithd@gmail.com",
@@ -64,8 +64,23 @@ export const usersSlice = createSlice({
 			const id = action.payload;
 			return state.filter((user) => user.id !== id);
 		},
+		editUserById: (state, action: PayloadAction<IdUser>) => {
+			const id = action.payload;
+			const name = action.payload;
+			const lastName = action.payload;
+			const email = action.payload;
+			const github = action.payload;
+
+			const userToEdit= state.find((user) => user.id === id);
+			if(userToEdit){
+				userToEdit.name = name
+				userToEdit.lastName = lastName
+				userToEdit.email = email
+				userToEdit.github = github
+			}
+		},
 	},
 });
 
+export const { deleteUserById, createUser, editUserById} = usersSlice.actions;
 export default usersSlice.reducer;
-export const { deleteUserById, createUser } = usersSlice.actions;

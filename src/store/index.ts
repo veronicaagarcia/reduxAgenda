@@ -7,9 +7,8 @@ export const store = configureStore({
 	reducer: {
 		users: usersSlice.reducer,
 	},
-	middleware: () => {
-		return [persistanceMiddleware, persistanceDb];
-	},
+	middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat([persistanceMiddleware, persistanceDb])
 });
 
 export type RootState = ReturnType<typeof store.getState>;

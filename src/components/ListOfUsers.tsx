@@ -1,52 +1,68 @@
-import { Badge, Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Title } from "@tremor/react";
+import { Badge, Button, Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Title } from "@tremor/react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { IdUser, UserId } from "../store/users/slice";
-import { deleteUserById } from "../store/users/slice";
+import { Toaster } from "sonner";
+import { IdUser, UserId, RootState, deleteUserById } from "../store/users/slice";
 
 export function ListOfUsers() {
 
-	const users = useSelector(state => state.users)
-
+	const users = useSelector((state: RootState) => state.users)
 	const dispatch = useDispatch()
+	const [sortByLastName, setSortByLastName] = useState(false)
 
 	const handleDelete = (id: IdUser) => {
 		dispatch(deleteUserById(id))
 	}
+
+	const toggleSortByLastName = () => {
+		setSortByLastName(prevState => !prevState)
+	}
+
+	const sortedLastName = sortByLastName
+	? [...users].sort((a, b) => {
+	   return a.lastName.localeCompare(b.lastName)
+	   })
+   : users 
 	
 	return (
 		<div className="w-4/6">
 		<header>
 			<h1 className="mt-8 text-cyan-400 font-bold text-center text-2xl">MY AGENDA</h1>
-			<Link className="bg-cyan-500 hover:bg-cyan-600 text-white p-3 border-none rounded-2xl mt-8" to="/create-user"> Create user</Link>
-			<Link className="bg-cyan-500 hover:bg-cyan-600 text-white p-3 border-none rounded-2xl mt-8 ml-4" to="/api-users-list"> Api users list</Link>
+			<div className="flex justify-between">
+				<Link className="bg-cyan-500 hover:bg-cyan-600 text-white p-3 border-none rounded-2xl mt-8" to="/create-user"> Create user</Link>
+				<Button type="button" className="bg-cyan-500 hover:bg-cyan-600 text-white p-3 border-none rounded-2xl mt-8" onClick={toggleSortByLastName}>
+                    {sortByLastName ? "Don't sort by last name" : "Sort by last name"}
+                </Button>
+				<Link className="bg-cyan-500 hover:bg-cyan-600 text-white p-3 border-none rounded-2xl mt-8" to="/api-users-list"> Api users list</Link>
+			</div>
 		</header>
 		<main>
 			<Card className="mt-8 rounded-2xl mb-8">
 				<Title className="text-center">
 					Total users :
-					<Badge className="ml-8 text-white bg-cyan-500 rounded-full">{users.length}</Badge>
+					<Badge className="ml-8 text-white bg-cyan-500 rounded-full">{sortedLastName.length}</Badge>
 				</Title>
 				<Table className="mt-8">
 					<TableHead>
 						<TableRow className="underline decoration-sky-500">
 							<TableHeaderCell>Avatar</TableHeaderCell>
-							<TableHeaderCell>Name</TableHeaderCell>
 							<TableHeaderCell>LastName</TableHeaderCell>
+							<TableHeaderCell>Name</TableHeaderCell>
 							<TableHeaderCell>Email</TableHeaderCell>
 							<TableHeaderCell>Actions</TableHeaderCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{users.map((item:UserId) => (
+						{sortedLastName.map((item:UserId) => (
 							<TableRow key={item.id}>
 								<TableCell>
 									<img className="w-12 h-12 rounded-2xl mr-2" src={`https://unavatar.io/github/${item.github}`}
 									alt={item.name}
 									/>
 								</TableCell>
-								<TableCell>{item.name}</TableCell>
 								<TableCell>{item.lastName}</TableCell>
+								<TableCell>{item.name}</TableCell>
 								<TableCell>{item.email}</TableCell>
 								<TableCell className="flex justify-center">
 									<Link to={`edit-user/${item.id}`} className="hover:text-cyan-600">
@@ -89,11 +105,8 @@ export function ListOfUsers() {
 					</TableBody>
 				</Table>
 			</Card>
+			<Toaster position="bottom-center" richColors />
 		</main>
 		</div>
 	);
 }
-function state(state: unknown): unknown {
-	throw new Error("Function not implemented.");
-}
-

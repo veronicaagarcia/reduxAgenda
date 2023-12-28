@@ -13,6 +13,10 @@ export interface UserId extends User {
 	id: IdUser;
 }
 
+export interface RootState {
+	users: Array<UserId>
+}
+
 const defaultState = [
 	{
 		id: "1",
@@ -64,12 +68,8 @@ export const usersSlice = createSlice({
 			const id = action.payload;
 			return state.filter((user) => user.id !== id);
 		},
-		editUserById: (state, action: PayloadAction<IdUser>) => {
-			const id = action.payload;
-			const name = action.payload;
-			const lastName = action.payload;
-			const email = action.payload;
-			const github = action.payload;
+		editUserById: (state, action: PayloadAction<UserId>) => {
+			const {id, name, lastName, email, github} = action.payload;
 
 			const userToEdit= state.find((user) => user.id === id);
 			if(userToEdit){

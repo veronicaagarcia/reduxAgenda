@@ -17,9 +17,9 @@ export function CreateUser() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const params = useParams()
-	const users = useSelector(state => state.users)
+	const users = useSelector((state:any) => state.users)
 
-	const handleChange = (e) => {
+	const handleChange = (e: { target: { name: string; value: string; }; }) => {
 		setUser({...user,
 			[e.target.name]: e.target.value
 		})
@@ -35,6 +35,7 @@ export function CreateUser() {
 		const lastName = formData.get("lastName") as string;
 		const email = formData.get("email") as string;
 		const github = formData.get("github") as string;
+		
 		if (!name || !lastName || !email || !github) {
 			return setResult("wrong");
 		}
@@ -44,9 +45,8 @@ export function CreateUser() {
 		} else {
 			dispatch(createUser(user));
 		}
-		setResult("ok");
-		form.reset();
 		navigate('/')
+		setResult("ok");
 	};
 
 	useEffect(()=>{

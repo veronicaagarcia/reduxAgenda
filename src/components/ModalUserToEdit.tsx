@@ -1,22 +1,8 @@
 import { Button, Card, TextInput, Title } from "@tremor/react";
-import { useAppSelector } from "../hooks/store";
 
 export function ModalUserToEdit() {
-    const users = useAppSelector((state) => state.users);
 	const handleEdit = (event: React.FormEvent<HTMLFormElement>) => {
 		event?.preventDefault();
-        console.log('que llega', users)
-		// const form = event.target;
-		// const formData = new FormData(form);
-
-		// const name = formData.get("name") as string;
-		// const lastName = formData.get("lastName") as string;
-		// const email = formData.get("email") as string;
-		// const github = formData.get("github") as string;
-
-		// editedUser({ name, lastName, email, github });
-        // modalOpenClose()
-		form.reset();
 	};
 	return (
 		<Card style={{ marginTop: "24px" }}>

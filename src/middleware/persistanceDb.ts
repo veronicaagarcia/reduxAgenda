@@ -1,31 +1,17 @@
 import { type Middleware } from "@reduxjs/toolkit";
-import { toast } from "sonner";
+import { toast} from "sonner";
 
 export const persistanceDb: Middleware = (store) => (next) => (action) => {
-	const { type, payload } = action ;
+	const { type, payload }:any = action;
 	next(action);
 
 	if (type === "users/deleteUserById") {
 		fetch(`https://jsonplaceholder.typicode.com/users/${payload}`, {
 			method: "DELETE",
 		})
-			.then((res) => {
-				if (res.ok) {
-					toast.success(`user id: '${payload}' deleted correctly`);
-				}
-			})
-			.catch(() => {
-				console.log("error");
-			});
-	}
-
-	if (type === "users/handleEdit"){
-		fetch(`https://jsonplaceholder.typicode.com/users/${payload}`, {
-			method: "PUT",
-		})
 		.then((res) => {
 			if (res.ok) {
-				toast.success(`user id: '${payload}' edited correctly`);
+				toast.success(`user id: '${payload}' deleted correctly`);
 			}
 		})
 		.catch(() => {
@@ -37,14 +23,13 @@ export const persistanceDb: Middleware = (store) => (next) => (action) => {
 		fetch("https://jsonplaceholder.typicode.com/users/", {
 			method: "POST",
 		})
-			.then((res) => {
-				console.log(payload, "aca");
-				if (res.ok) {
-					toast.success("user created correctly");
-				}
-			})
-			.catch(() => {
-				console.log("error");
-			});
+		.then((res) => {
+			if (res.ok) {
+				toast.success("user created correctly");
+			}
+		})
+		.catch(() => {
+			console.log("error");
+		});
 	}
 };
